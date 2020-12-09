@@ -1,25 +1,14 @@
 package io.rangermix.routing.data;
 
-import io.rangermix.routing.enums.BoardingInstruction;
 import io.rangermix.routing.enums.RouteType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-
 @Data
+@AllArgsConstructor
 public class Route {
     @NotNull String id;
     @NotNull Agency agency;
-    String shortName;
-    String longName;
-    String description;
-    @NotNull
-    RouteType type;
-    String url;
-    Color color = Color.WHITE;
-    Color textColor = Color.BLACK;
-    int sortOrder = Integer.MAX_VALUE;
-    BoardingInstruction continuousPickup = BoardingInstruction.NOT_AVAILABLE;
-    BoardingInstruction continuousDropOff = BoardingInstruction.NOT_AVAILABLE;
+    @NotNull RouteType type;
 }

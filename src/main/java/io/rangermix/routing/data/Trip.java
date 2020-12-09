@@ -1,20 +1,16 @@
 package io.rangermix.routing.data;
 
-import io.rangermix.routing.enums.Direction;
-import io.rangermix.routing.enums.Possibility;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 @Data
+@AllArgsConstructor
 public class Trip {
-    @NotNull String routeId;
-    @NotNull String serviceId;
+    @NotNull Route route;
+    @NotNull Service service;
     @NotNull String id;
-    String headsign;
-    String shortName;
-    Direction directionId;
-    String blockId;
-    String shapeId;
-    Possibility wheelchairAccessible = Possibility.UNKNOWN;
-    Possibility bikesAllowed = Possibility.UNKNOWN;
+    List<StopTime> stopTimes;
 }
