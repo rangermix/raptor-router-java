@@ -15,7 +15,7 @@ public class DataPackage {
     private final Map<String, Stop> stopMap;
     private final Map<String, Route> routeMap;
     private final Map<String, Service> serviceMap;
-    private final Map<String, Trip> tripMap;
+    private Map<String, Trip> tripMap;
 
     public DataPackage(GtfsDaoImpl staticGTFSSource) {
         this.staticGTFSSource = staticGTFSSource;
@@ -25,6 +25,7 @@ public class DataPackage {
         routeMap = loadRoute(staticGTFSSource);
         serviceMap = loadService(staticGTFSSource);
         tripMap = loadTrip(staticGTFSSource);
+        tripMap = loadStopTime(staticGTFSSource, tripMap);
     }
 
     private Map<String, Agency> loadAgency(GtfsDaoImpl source) {
@@ -46,10 +47,13 @@ public class DataPackage {
     }
 
     private Map<String, Trip> loadTrip(GtfsDaoImpl source) {
-        Map<String, Trip> tripMap = source.getAllTrips().stream().map(this::convertTrip).collect(Collectors.toMap(Trip::getId, Function.identity()));
+        return source.getAllTrips().stream().map(this::convertTrip).collect(Collectors.toMap(Trip::getId, Function.identity()));
+    }
+
+    private Map<String, Trip> loadStopTime(GtfsDaoImpl source, Map<String, Trip> tripMap) {
         source.getAllStopTimes().stream().map(this::convertStopTime).forEach(stopTime -> stopTime.getTrip().getStopTimes().add(stopTime));
         tripMap.values().forEach(trip -> trip.getStopTimes().sort(Comparator.comparingInt(StopTime::getStopSequence)));
-        return tripMap;
+        return this.tripMap;
     }
 
     private Agency convertAgency(org.onebusaway.gtfs.model.Agency source) {
@@ -80,7 +84,7 @@ public class DataPackage {
         weekMask.set(6, source.getSunday() == 1);
         var agency = agencyMap.get(source.getServiceId().getAgencyId());
         return new Service(
-                String.valueOf(source.getId()),
+                String.valueOf(source.getServiceId().getId()),
                 weekMask,
                 source.getStartDate().getAsCalendar(agency.getTimeZone()),
                 source.getEndDate().getAsCalendar(agency.getTimeZone()));
