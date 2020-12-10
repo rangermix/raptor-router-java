@@ -1,9 +1,14 @@
 package io.rangermix.routing.data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import lombok.Data;
 
 @Data
-public class Coordinate {
+public class Coordinate implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 2375316261066234248L;
     private static final double RADIUS = 6371000;
     private static final double RADIANS = 3.14159 / 180;
     double lat;

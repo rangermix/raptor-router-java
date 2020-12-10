@@ -5,12 +5,16 @@ import io.rangermix.routing.enums.RouteType;
 import org.onebusaway.gtfs.impl.GtfsDaoImpl;
 import org.onebusaway.gtfs.model.AgencyAndId;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class DataPackage {
-    private final GtfsDaoImpl staticGTFSSource;
+public class DataPackage implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1354778733203723197L;
+    private transient final GtfsDaoImpl staticGTFSSource;
     private final Map<String, Agency> agencyMap;
     private final Map<String, Stop> stopMap;
     private final Map<String, Route> routeMap;

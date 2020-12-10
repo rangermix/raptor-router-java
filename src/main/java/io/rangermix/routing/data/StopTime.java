@@ -4,11 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.StringJoiner;
 
 @Data
 @AllArgsConstructor
-public class StopTime {
+public class StopTime implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 6922301736941245674L;
     @NotNull Trip trip;
     int arrivalTime;
     int departureTime;

@@ -3,12 +3,16 @@ package io.rangermix.routing.data;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.BitSet;
 import java.util.Calendar;
 
 @Data
-public class Service {
+public class Service implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5149514752533129109L;
     @NotNull String id;
     BitSet dayMask;
     Calendar startDate;
