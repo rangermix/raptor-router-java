@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 public class DataSerializer {
 
@@ -27,9 +26,9 @@ public class DataSerializer {
         stopWatch.start("loading GTFS data into data package...");
         DataPackage dataPackage = new DataPackage(store);
         stopWatch.lap("finished loading");
-        try (FSTObjectOutput out = new FSTObjectOutput(new FileOutputStream("sydneyGTFS.ser"))) {
+        try (FSTObjectOutput out = new FSTObjectOutput(new FileOutputStream("sydneyGTFS.dataPack"))) {
             out.writeObject(dataPackage);
-            stopWatch.lap("Serialized data is saved in sydneyGTFS.ser");
+            stopWatch.lap("Serialized data is saved in sydneyGTFS.dataPack");
         } catch (IOException e) {
             e.printStackTrace();
         }
