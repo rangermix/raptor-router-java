@@ -1,4 +1,4 @@
-package io.rangermix.routing.data;
+package io.rangermix.routing.model;
 
 import java.io.Serial;
 import java.io.Serializable;

@@ -1,4 +1,6 @@
-import io.rangermix.routing.data.DataPackage;
+package io.rangermix;
+
+import io.rangermix.routing.model.DataPackage;
 import io.rangermix.util.StopWatch;
 import org.nustaq.serialization.FSTObjectOutput;
 import org.onebusaway.gtfs.impl.GtfsDaoImpl;
@@ -15,9 +17,13 @@ public class DataSerializer {
     private static final Logger log = LoggerFactory.getLogger(DataSerializer.class);
 
     public static void main(String[] args) throws IOException {
+        extracted();
+    }
+
+    private static void extracted() throws IOException {
         GtfsReader reader = new GtfsReader();
-        var gtfsZip = DataSerializer.class.getClassLoader().getResource("full_greater_sydney_gtfs_static.zip");
-        reader.setInputLocation(new File(gtfsZip.getPath()));
+//        var gtfsZip = DataSerializer.class.getClassLoader().getResource("full_greater_sydney_gtfs_static.zip");
+        reader.setInputLocation(new File("full_greater_sydney_gtfs_static.zip"));
         GtfsDaoImpl store = new GtfsDaoImpl();
         reader.setEntityStore(store);
         reader.run();

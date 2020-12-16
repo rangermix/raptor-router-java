@@ -1,7 +1,9 @@
-package io.rangermix.routing.data;
+package io.rangermix.routing.model;
 
 import io.rangermix.routing.enums.LocationType;
 import io.rangermix.routing.enums.RouteType;
+import io.rangermix.util.StopWatch;
+import lombok.extern.slf4j.Slf4j;
 import org.onebusaway.gtfs.impl.GtfsDaoImpl;
 import org.onebusaway.gtfs.model.AgencyAndId;
 
@@ -11,6 +13,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class DataPackage implements Serializable {
     @Serial
     private static final long serialVersionUID = 1354778733203723197L;
@@ -39,6 +42,36 @@ public class DataPackage implements Serializable {
     private Map<String, Stop> loadStop(GtfsDaoImpl source) {
         Map<String, Stop> stopMap = source.getAllStops().stream().map(this::convertStop).collect(Collectors.toMap(Stop::getId, Function.identity()));
         stopMap.forEach((id, stop) -> stop.setParentStation(stopMap.get(source.getStopForId(new AgencyAndId(stop.agency.id, stop.id)).getParentStation())));
+        StopWatch stopWatch = new StopWatch(log);
+        stopWatch.start("start creating transfers");
+//        for (var a : stopMap.values()) {
+//            for (var b : stopMap.values()) {
+//                if (a.hashCode() > b.hashCode() || a.equals(b))
+//                    continue;
+//
+//                double distance = a.coordinate.distanceTo(b.coordinate);
+//                if (distance > 1000)
+//                    continue;
+//
+//                Transfer transfer = new Transfer(a, b, distance);
+//                a.getTransfers().add(transfer);
+//                b.getTransfers().add(transfer);
+//            }
+//        }
+        stopMap.values().forEach(a -> stopMap.values().forEach(b -> {
+            if (a.hashCode() > b.hashCode() || a.equals(b))
+                return;
+
+            double distance = a.coordinate.distanceTo(b.coordinate);
+            if (distance > 1000)
+                return;
+
+            Transfer transfer = new Transfer(a, b, distance);
+            a.getTransfers().add(transfer);
+            b.getTransfers().add(transfer);
+        }));
+        stopWatch.lap("finished creating transfers");
+
         return stopMap;
     }
 
@@ -69,8 +102,7 @@ public class DataPackage implements Serializable {
                 agencyMap.get(source.getId().getAgencyId()),
                 source.getId().getId(),
                 new Coordinate(source.getLat(), source.getLon()),
-                LocationType.valueOf(source.getLocationType()),
-                null);  // fill this later
+                LocationType.valueOf(source.getLocationType()));  // fill this later
     }
 
     private Route convertRoute(org.onebusaway.gtfs.model.Route source) {

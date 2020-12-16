@@ -1,4 +1,6 @@
-import io.rangermix.routing.data.DataPackage;
+package io.rangermix;
+
+import io.rangermix.routing.model.DataPackage;
 import io.rangermix.util.StopWatch;
 import lombok.extern.slf4j.Slf4j;
 import org.nustaq.serialization.FSTObjectInput;
@@ -8,7 +10,7 @@ import java.io.FileInputStream;
 @Slf4j
 public class DataDeserializer {
 
-    public static void main(String[] args) {
+    public static DataPackage getSydneyDataPackage() {
         StopWatch stopWatch = new StopWatch(log);
         stopWatch.start("loading data package from sydneyGTFS.dataPack...");
         DataPackage dataPackage = null;
@@ -18,11 +20,7 @@ public class DataDeserializer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (dataPackage.equals(null)) {
-            System.currentTimeMillis();
-        } else {
-            System.currentTimeMillis();
-        }
-        System.currentTimeMillis();
+        return dataPackage;
     }
+
 }

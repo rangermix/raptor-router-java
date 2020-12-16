@@ -1,9 +1,11 @@
-package io.rangermix.routing.data;
+package io.rangermix.routing.model;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.onebusaway.gtfs.impl.GtfsDaoImpl;
 import org.onebusaway.gtfs.serialization.GtfsReader;
+
+import io.rangermix.routing.model.DataPackage;
 
 import java.io.File;
 import java.io.IOException;

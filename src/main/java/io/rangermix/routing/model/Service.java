@@ -1,4 +1,4 @@
-package io.rangermix.routing.data;
+package io.rangermix.routing.model;
 
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;

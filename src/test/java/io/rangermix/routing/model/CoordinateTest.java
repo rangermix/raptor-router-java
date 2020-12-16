@@ -1,5 +1,7 @@
-import io.rangermix.routing.data.Coordinate;
+package io.rangermix.routing.model;
 import org.junit.jupiter.api.Test;
+
+import io.rangermix.routing.model.Coordinate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

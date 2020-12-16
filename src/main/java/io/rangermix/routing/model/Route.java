@@ -1,4 +1,4 @@
-package io.rangermix.routing.data;
+package io.rangermix.routing.model;
 
 import io.rangermix.routing.enums.RouteType;
 import lombok.AllArgsConstructor;
