@@ -1,8 +1,5 @@
 package io.rangermix.routing.model;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
 import java.io.Serial;
 import java.io.Serializable;
 

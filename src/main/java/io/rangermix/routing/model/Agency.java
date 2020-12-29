@@ -1,20 +1,19 @@
 package io.rangermix.routing.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
+import lombok.RequiredArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.TimeZone;
 
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Agency implements Serializable {
     @Serial
     private static final long serialVersionUID = -228914687065757433L;
-    String id;
-    @NotNull String name;
-    @NotNull String url;
-    @NotNull TimeZone timeZone;
+    final String id;
+    final String name;
+    final String url;
+    final TimeZone timeZone;
 }

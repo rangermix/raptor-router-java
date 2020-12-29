@@ -1,9 +1,9 @@
 package io.rangermix.routing.model;
 
+import lombok.Data;
+
 import java.io.Serial;
 import java.io.Serializable;
-
-import lombok.Data;
 
 @Data
 public class Coordinate implements Serializable {

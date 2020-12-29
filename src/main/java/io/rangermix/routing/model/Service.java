@@ -13,11 +13,11 @@ import java.util.Calendar;
 public class Service implements Serializable {
     @Serial
     private static final long serialVersionUID = -5149514752533129109L;
-    @NotNull String id;
-    BitSet dayMask;
-    Calendar startDate;
-    Calendar endDate;
-    int numDays;
+    public final String id;
+    public final BitSet dayMask;
+    public final Calendar startDate;
+    public final Calendar endDate;
+    public final int numDays;
 
     public Service(@NotNull String id, BitSet weekMask, Calendar startDate, Calendar endDate) {
         this.id = id;

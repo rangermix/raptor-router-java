@@ -1,26 +1,53 @@
 package io.rangermix.routing.model;
 
 import io.rangermix.routing.enums.LocationType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-@Data
 @RequiredArgsConstructor
 public class Stop implements Serializable {
     @Serial
     private static final long serialVersionUID = 1212227387820663935L;
-    final Agency agency;
-    final String id;
-    final Coordinate coordinate;
-    final LocationType locationType;
-    Stop parentStation;
-    List<Transfer> transfers = new ArrayList<>();
+    public final Agency agency;
+    @Getter
+    public final String id;
+    public final Coordinate coordinate;
+    public final LocationType locationType;
+    public Stop parentStation;
+    public final List<Transfer> transfers = Collections.synchronizedList(new ArrayList<>());
+    public final Set<MetaRoute> metaRoutes = ConcurrentHashMap.newKeySet();
+    public final Set<Route> routes = ConcurrentHashMap.newKeySet();
+
+    public boolean behindStopInRoute(Stop other, Route route) {
+        for (var curr : route.stops) {
+            if (curr == other)
+                return false;
+            if (curr == this)
+                return true;
+        }
+        throw new IllegalArgumentException(String.format("The route %s doesn't have stop %s nor %s",
+                route,
+                this,
+                other));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Stop stop = (Stop) o;
+        return agency.equals(stop.agency) && id.equals(stop.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(agency, id);
+    }
 }

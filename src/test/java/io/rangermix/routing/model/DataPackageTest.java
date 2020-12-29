@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.onebusaway.gtfs.impl.GtfsDaoImpl;
 import org.onebusaway.gtfs.serialization.GtfsReader;
 
-import io.rangermix.routing.model.DataPackage;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
@@ -18,7 +16,8 @@ class DataPackageTest {
     @BeforeAll
     static void loadGTFS() throws IOException {
         GtfsReader reader = new GtfsReader();
-        reader.setInputLocation(new File(Objects.requireNonNull(DataPackageTest.class.getClassLoader().getResource("sample-feed.zip")).getPath()));
+        reader.setInputLocation(new File(Objects.requireNonNull(DataPackageTest.class.getClassLoader()
+                .getResource("sample-feed.zip")).getPath()));
         store = new GtfsDaoImpl();
         reader.setEntityStore(store);
         reader.run();

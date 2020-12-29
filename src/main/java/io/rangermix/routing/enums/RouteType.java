@@ -1,7 +1,6 @@
 package io.rangermix.routing.enums;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -19,7 +18,7 @@ public enum RouteType {
     MONORAIL(12),
     EXTENSION(100);
 
-    private int id;
+    private final int id;
     private static final Map<Integer, RouteType> _values;
 
     static {
@@ -32,7 +31,7 @@ public enum RouteType {
 
     public static RouteType valueOf(int id) {
         var type = _values.get(id);
-        return type==null ? EXTENSION : type;
+        return type == null ? EXTENSION : type;
     }
 
     public int getId() {

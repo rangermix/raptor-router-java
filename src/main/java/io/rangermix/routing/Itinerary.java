@@ -1,7 +1,15 @@
 package io.rangermix.routing;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Itinerary {
-    List<Leg> legs;
+    long startTime;
+    long endTime;
+    List<Leg> legs = new ArrayList<>();
+
+    Itinerary(long time) {
+        startTime = time;
+        endTime = time;
+    }
 }

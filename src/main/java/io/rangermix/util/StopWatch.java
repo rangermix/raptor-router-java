@@ -1,13 +1,11 @@
 package io.rangermix.util;
 
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class StopWatch {
     private final Logger log;

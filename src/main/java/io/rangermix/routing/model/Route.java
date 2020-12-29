@@ -1,21 +1,22 @@
 package io.rangermix.routing.model;
 
-import io.rangermix.routing.enums.RouteType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-
-@Data
-@AllArgsConstructor
 public class Route implements Serializable {
     @Serial
-    private static final long serialVersionUID = 5278546465986360990L;
-    @NotNull
-    String id;
-    @NotNull Agency agency;
-    @NotNull RouteType type;
+    private static final long serialVersionUID = 6874317310518777358L;
+    public final MetaRoute metaRoute;
+    public final List<Stop> stops;
+    public final List<Trip> trips;
+    public Trip sampleTrip;
+
+    public Route(MetaRoute metaRoute, List<Stop> stops, List<Trip> trips) {
+        this.metaRoute = metaRoute;
+        this.stops = stops;
+        this.trips = trips;
+        trips.sort(Trip.TIME_COMPARATOR);
+        sampleTrip = trips.get(0);
+    }
 }
