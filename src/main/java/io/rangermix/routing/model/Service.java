@@ -5,9 +5,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZonedDateTime;
 import java.util.BitSet;
-import java.util.Calendar;
 
 @Data
 public class Service implements Serializable {
@@ -15,21 +16,36 @@ public class Service implements Serializable {
     private static final long serialVersionUID = -5149514752533129109L;
     public final String id;
     public final BitSet dayMask;
-    public final Calendar startDate;
-    public final Calendar endDate;
+    public final ZonedDateTime startDate;
+    public final ZonedDateTime endDate;
     public final int numDays;
 
-    public Service(@NotNull String id, BitSet weekMask, Calendar startDate, Calendar endDate) {
+    public Service(@NotNull String id, BitSet weekMask, ZonedDateTime startDate, ZonedDateTime endDate) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
 
-        numDays = (int) Duration.between(startDate.toInstant(), endDate.toInstant()).toDays() + 1;
+        numDays = Period.between(startDate.toLocalDate(), endDate.toLocalDate()).getDays() + 1;
         dayMask = new BitSet(numDays);
-        var day = startDate.get(Calendar.DAY_OF_WEEK);
+        var day = startDate.getDayOfWeek().ordinal();
         for (int i = 0; i < numDays; i++) {
             dayMask.set(i, weekMask.get(day++));
             day %= 7;
         }
+    }
+
+    public boolean enabledOn(LocalDate date) {
+        return dayMask.get(Period.between(startDate.toLocalDate(), date).getDays());
+    }
+
+    /**
+     * Find the next enabled date from the given date (inclusive).
+     *
+     * @param date date to search from
+     * @return next enabled date or null if no next enabled date
+     */
+    public ZonedDateTime nextEnabledDate(LocalDate date) {
+        var nextDateIndex = dayMask.nextSetBit(Period.between(startDate.toLocalDate(), date).getDays());
+        return nextDateIndex == -1 ? null : startDate.plusDays(nextDateIndex);
     }
 }

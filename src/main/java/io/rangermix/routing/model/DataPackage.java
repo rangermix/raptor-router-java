@@ -11,6 +11,7 @@ import org.onebusaway.gtfs.model.AgencyAndId;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -155,11 +156,13 @@ public class DataPackage implements Serializable {
         weekMask.set(4, source.getFriday() == 1);
         weekMask.set(5, source.getSaturday() == 1);
         weekMask.set(6, source.getSunday() == 1);
-        var agency = agencyMap.get(source.getServiceId().getAgencyId());
-        return new Service(String.valueOf(source.getServiceId().getId()),
+        var zoneId = agencyMap.get(source.getServiceId().getAgencyId()).timeZone.toZoneId();
+        var startDate = source.getStartDate();
+        var endDate = source.getEndDate();
+        return new Service(source.getServiceId().getId(),
                 weekMask,
-                source.getStartDate().getAsCalendar(agency.getTimeZone()),
-                source.getEndDate().getAsCalendar(agency.getTimeZone()));
+                ZonedDateTime.of(startDate.getYear(), startDate.getMonth(), startDate.getDay(), 0, 0, 0, 0, zoneId),
+                ZonedDateTime.of(endDate.getYear(), endDate.getMonth(), endDate.getDay(), 0, 0, 0, 0, zoneId));
     }
 
     private Trip convertTrip(org.onebusaway.gtfs.model.Trip source) {

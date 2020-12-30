@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -12,12 +13,22 @@ import java.util.StringJoiner;
 public class StopTime implements Serializable {
     @Serial
     private static final long serialVersionUID = 6922301736941245674L;
-    final Trip trip;
-    final long arrivalTime;
-    final long departureTime;
+    public final Trip trip;
+    public final long arrivalTime;
+    public final long departureTime;
     @Getter
-    final Stop stop;
-    final int stopSequence;
+    public final Stop stop;
+    public final int stopSequence;
+
+    public long nextArrivalTimeFromDate(LocalDate tripStartDate) {
+        var date = trip.service.nextEnabledDate(tripStartDate);
+        return date == null ? Long.MAX_VALUE : date.plusSeconds(arrivalTime).toEpochSecond();
+    }
+
+    public long nextDepartureTimeFromDate(LocalDate tripStartDate) {
+        var date = trip.service.nextEnabledDate(tripStartDate);
+        return date == null ? Long.MAX_VALUE : date.plusSeconds(departureTime).toEpochSecond();
+    }
 
     @Override
     public boolean equals(Object o) {

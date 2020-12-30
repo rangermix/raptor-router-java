@@ -43,7 +43,6 @@ public class RaptorRouter {
             Q.forEach((r, p) -> {
                 var t = p.itinerary;
 
-
             });
 
             // Look at foot-paths
