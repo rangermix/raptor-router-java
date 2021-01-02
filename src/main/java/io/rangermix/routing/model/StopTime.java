@@ -47,10 +47,10 @@ public class StopTime implements Serializable {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", StopTime.class.getSimpleName() + "[", "]").add("trip=" + trip.getId())
+        return new StringJoiner(", ", StopTime.class.getSimpleName() + "[", "]").add("trip=" + trip.id)
                 .add("arrivalTime=" + arrivalTime)
                 .add("departureTime=" + departureTime)
-                .add("stop=" + stop)
+                .add("stop=" + stop.id)
                 .add("stopSequence=" + stopSequence)
                 .toString();
     }

@@ -239,10 +239,10 @@ public class DataPackage implements Serializable {
         return new StringJoiner(", ",
                 DataPackage.class.getSimpleName() + "[",
                 "]").add("staticGTFSSource=" + staticGTFSSource)
-                .add("agencyMap=" + agencyMap)
-                .add("stopMap=" + stopMap)
-                .add("routeMap=" + metaRouteMap)
-                .add("tripMap=" + tripMap)
+                .add("agencyMap=" + agencyMap.size())
+                .add("stopMap=" + stopMap.size())
+                .add("routeMap=" + metaRouteMap.size())
+                .add("tripMap=" + tripMap.size())
                 .toString();
     }
 }

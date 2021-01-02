@@ -45,7 +45,13 @@ public class Service implements Serializable {
      * @return next enabled date or null if no next enabled date
      */
     public ZonedDateTime nextEnabledDate(LocalDate date) {
+        if (!hasDate(date))
+            return null;
         var nextDateIndex = dayMask.nextSetBit(Period.between(startDate.toLocalDate(), date).getDays());
         return nextDateIndex == -1 ? null : startDate.plusDays(nextDateIndex);
+    }
+
+    public boolean hasDate(LocalDate date) {
+        return startDate.toLocalDate().minusDays(1).isBefore(date) && endDate.toLocalDate().plusDays(1).isAfter(date);
     }
 }

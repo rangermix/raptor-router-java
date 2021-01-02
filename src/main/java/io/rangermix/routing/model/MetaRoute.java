@@ -30,7 +30,7 @@ public class MetaRoute implements Serializable {
         if (o == null || getClass() != o.getClass())
             return false;
         MetaRoute metaRoute = (MetaRoute) o;
-        return id.equals(metaRoute.id) && agency.equals(metaRoute.agency);
+        return Objects.equals(id, metaRoute.id) && Objects.equals(agency, metaRoute.agency);
     }
 
     @Override

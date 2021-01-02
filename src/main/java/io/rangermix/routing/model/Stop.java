@@ -50,4 +50,13 @@ public class Stop implements Serializable {
     public int hashCode() {
         return Objects.hash(agency, id);
     }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Stop.class.getSimpleName() + "[", "]").add("id='" + id + "'")
+                .add("coordinate=" + coordinate)
+                .add("locationType=" + locationType)
+                .toString();
+    }
+
 }
