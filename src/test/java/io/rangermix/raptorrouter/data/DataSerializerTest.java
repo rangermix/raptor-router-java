@@ -1,7 +1,5 @@
-package io.rangermix;
+package io.rangermix.raptorrouter.data;
 
-import io.rangermix.raptorrouter.DataManager;
-import io.rangermix.raptorrouter.DataSerializer;
 import io.rangermix.raptorrouter.routing.model.DataPackage;
 import org.junit.jupiter.api.Test;
 

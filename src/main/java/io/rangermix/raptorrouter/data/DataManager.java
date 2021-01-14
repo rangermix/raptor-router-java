@@ -1,4 +1,4 @@
-package io.rangermix.raptorrouter;
+package io.rangermix.raptorrouter.data;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;

@@ -1,6 +1,5 @@
-package io.rangermix;
+package io.rangermix.raptorrouter.data;
 
-import io.rangermix.raptorrouter.DataDeserializer;
 import org.junit.jupiter.api.Test;
 
 public class DataDeserializerTest {

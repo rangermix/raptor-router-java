@@ -1,4 +1,4 @@
-package io.rangermix.raptorrouter;
+package io.rangermix.raptorrouter.data;
 
 import io.rangermix.raptorrouter.routing.model.DataPackage;
 import io.rangermix.raptorrouter.util.StopWatch;
