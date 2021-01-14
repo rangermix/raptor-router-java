@@ -1,6 +1,8 @@
 package io.rangermix;
 
-import io.rangermix.routing.model.DataPackage;
+import io.rangermix.raptorrouter.DataManager;
+import io.rangermix.raptorrouter.DataSerializer;
+import io.rangermix.raptorrouter.routing.model.DataPackage;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,7 +19,7 @@ public class DataSerializerTest {
 
     @Test
     void testGTFSRouteAndTrips() throws IOException {
-        var dao = DataManager.getSydneyGtfsDao();
+        var dao = DataManager.getSydneyGtfsDao(DataManager.getInmemoryStore());
         var dataPackage = new DataPackage(dao);
         var routesWithTripsWithDifferentStops = dataPackage.getMetaRouteMap()
                 .values()
