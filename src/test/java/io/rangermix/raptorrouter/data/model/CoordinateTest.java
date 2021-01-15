@@ -1,4 +1,4 @@
-package io.rangermix.raptorrouter.routing.model;
+package io.rangermix.raptorrouter.data.model;
 
 import org.junit.jupiter.api.Test;
 

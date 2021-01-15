@@ -1,5 +1,6 @@
 package io.rangermix.raptorrouter.routing.model;
 
+import io.rangermix.raptorrouter.data.model.Coordinate;
 import io.rangermix.raptorrouter.routing.enums.LocationType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

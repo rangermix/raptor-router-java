@@ -1,5 +1,6 @@
 package io.rangermix.raptorrouter.routing.model;
 
+import io.rangermix.raptorrouter.data.model.Coordinate;
 import io.rangermix.raptorrouter.routing.enums.LocationType;
 import io.rangermix.raptorrouter.routing.enums.RouteType;
 import io.rangermix.raptorrouter.util.StopWatch;
