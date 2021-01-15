@@ -21,18 +21,18 @@ public class Stop implements Serializable {
     public final LocationType locationType;
     public Stop parentStation;
     public final List<Transfer> transfers = Collections.synchronizedList(new ArrayList<>());
-    public final Set<MetaRoute> metaRoutes = ConcurrentHashMap.newKeySet();
     public final Set<Route> routes = ConcurrentHashMap.newKeySet();
+    public final Set<RoutePattern> routePatterns = ConcurrentHashMap.newKeySet();
 
-    public boolean behindStopInRoute(Stop other, Route route) {
-        for (var curr : route.stops) {
+    public boolean behindStopInRoute(Stop other, RoutePattern routePattern) {
+        for (var curr : routePattern.stops) {
             if (curr == other)
                 return false;
             if (curr == this)
                 return true;
         }
         throw new IllegalArgumentException(String.format("The route %s doesn't have stop %s nor %s",
-                route,
+                routePattern,
                 this,
                 other));
     }

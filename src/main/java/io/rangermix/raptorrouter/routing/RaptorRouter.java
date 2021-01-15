@@ -1,7 +1,7 @@
 package io.rangermix.raptorrouter.routing;
 
 import io.rangermix.raptorrouter.routing.model.DataPackage;
-import io.rangermix.raptorrouter.routing.model.Route;
+import io.rangermix.raptorrouter.routing.model.RoutePattern;
 import io.rangermix.raptorrouter.routing.model.Trip;
 import io.rangermix.raptorrouter.util.StopWatch;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class RaptorRouter {
             stopWatch.lap("start round {}", k);
 
             // Accumulate routes serving marked stops from previous round
-            Map<Route, Stop> Q = findMarkedStopsWithRoute();
+            Map<RoutePattern, Stop> Q = findMarkedStopsWithRoute();
 
             // Traverse each route
             Q.forEach(this::expandThroughRoute);
@@ -51,10 +51,10 @@ public class RaptorRouter {
     }
 
     @NotNull
-    private Map<Route, Stop> findMarkedStopsWithRoute() {
-        Map<Route, Stop> Q = new HashMap<>();
+    private Map<RoutePattern, Stop> findMarkedStopsWithRoute() {
+        Map<RoutePattern, Stop> Q = new HashMap<>();
         for (var p : markedStops) {
-            for (var r : p.stop.routes) {
+            for (var r : p.stop.routePatterns) {
                 var pp = Q.get(r);
                 if (pp == null || pp.stop.behindStopInRoute(p.stop, r))
                     Q.put(r, p);
@@ -65,7 +65,7 @@ public class RaptorRouter {
         return Q;
     }
 
-    private void expandThroughRoute(Route r, Stop p) {
+    private void expandThroughRoute(RoutePattern r, Stop p) {
         Trip t = null;    // the current trip
         LocalDate date = Instant.ofEpochSecond(p.bestArrivalTime)
                 .atZone(p.stop.agency.getTimeZone().toZoneId())

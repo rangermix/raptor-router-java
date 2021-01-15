@@ -11,7 +11,7 @@ import java.util.*;
 public class Trip implements Serializable {
     @Serial
     private static final long serialVersionUID = -860604145187379705L;
-    final MetaRoute metaRoute;
+    final Route route;
     final Service service;
     @Getter
     final String id;
@@ -39,11 +39,11 @@ public class Trip implements Serializable {
         if (o == null || getClass() != o.getClass())
             return false;
         Trip trip = (Trip) o;
-        return metaRoute.equals(trip.metaRoute) && id.equals(trip.id);
+        return route.equals(trip.route) && id.equals(trip.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(metaRoute, id);
+        return Objects.hash(route, id);
     }
 }

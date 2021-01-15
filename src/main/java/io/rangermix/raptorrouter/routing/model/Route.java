@@ -1,42 +1,39 @@
 package io.rangermix.raptorrouter.routing.model;
 
+import io.rangermix.raptorrouter.routing.enums.RouteType;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
+@RequiredArgsConstructor
 public class Route implements Serializable {
     @Serial
-    private static final long serialVersionUID = 6874317310518777358L;
-    public final MetaRoute metaRoute;
-    public final List<Stop> stops;
-    public final List<Trip> trips;
-    public Trip sampleTrip;
+    private static final long serialVersionUID = 5278546465986360990L;
+    @Getter
+    public final String id;
+    public final Agency agency;
+    public final RouteType type;
+    public final List<Trip> trips = Collections.synchronizedList(new ArrayList<>());
+    public final List<RoutePattern> routePatterns = Collections.synchronizedList(new ArrayList<>());
 
-    public Route(MetaRoute metaRoute, List<Stop> stops, List<Trip> trips) {
-        this.metaRoute = metaRoute;
-        this.stops = stops;
-        this.trips = trips;
-        trips.sort(Trip.TIME_COMPARATOR);
-        sampleTrip = trips.get(0);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Route route = (Route) o;
+        return Objects.equals(id, route.id) && Objects.equals(agency, route.agency);
     }
 
-    public Iterator<StopTime> stopTimeIterator(Stop stop, long arriveTime) {
-        int stopIndex = stops.indexOf(stop);
-        Trip bestTrip = null;
-        long earliestDep = Long.MAX_VALUE;
-        for (Trip trip : trips) {
-            var stopTime = trip.stopTimes.get(stopIndex);
-            var nextDep = stopTime.nextDepartureTimeFromDate(Instant.ofEpochSecond(arriveTime)
-                    .atZone(metaRoute.agency.timeZone.toZoneId())
-                    .toLocalDate());
-            if (nextDep >= arriveTime && nextDep < earliestDep) {
-                earliestDep = nextDep;
-                bestTrip = trip;
-            }
-        }
-        return bestTrip == null ? Collections.emptyIterator() : bestTrip.stopTimes.listIterator(stopIndex);
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, agency);
     }
 }

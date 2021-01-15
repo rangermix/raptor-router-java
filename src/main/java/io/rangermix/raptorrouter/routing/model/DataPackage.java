@@ -28,7 +28,7 @@ public class DataPackage implements Serializable {
     @Getter
     private final Map<String, Stop> stopMap;
     @Getter
-    private final Map<String, MetaRoute> metaRouteMap;
+    private final Map<String, Route> metaRouteMap;
     @Getter
     private final Map<String, Service> serviceMap;
     @Getter
@@ -78,11 +78,11 @@ public class DataPackage implements Serializable {
         return stopMap;
     }
 
-    private Map<String, MetaRoute> loadRoute(GtfsMutableDao source) {
+    private Map<String, Route> loadRoute(GtfsMutableDao source) {
         return source.getAllRoutes()
                 .parallelStream()
                 .map(this::convertRoute)
-                .collect(Collectors.toMap(MetaRoute::getId, Function.identity()));
+                .collect(Collectors.toMap(Route::getId, Function.identity()));
     }
 
     private Map<String, Service> loadService(GtfsMutableDao source) {
@@ -101,13 +101,14 @@ public class DataPackage implements Serializable {
         errors.putAll(checkEmptyRoutes(metaRouteMap));
 
         metaRouteMap.values().parallelStream().forEach(route -> {
-            route.trips.parallelStream().collect(Collectors.groupingBy(trip -> trip.stopTimes.stream()
+            route.trips.parallelStream()
+                    .collect(Collectors.groupingBy(trip -> trip.stopTimes.stream()
                             .map(StopTime::getStop)
                             .collect(Collectors.toList())))
-                    .forEach((stops, trips) -> route.routes.add(new Route(route, stops, trips)));
-            route.routes.forEach(stopPattern -> stopPattern.stops.forEach(stop -> {
-                stop.metaRoutes.add(route);
-                stop.routes.add(stopPattern);
+                    .forEach((stops, trips) -> route.routePatterns.add(new RoutePattern(route, stops, trips)));
+            route.routePatterns.forEach(stopPattern -> stopPattern.stops.forEach(stop -> {
+                stop.routes.add(route);
+                stop.routePatterns.add(stopPattern);
             }));
         });
 
@@ -129,8 +130,7 @@ public class DataPackage implements Serializable {
     private Agency convertAgency(org.onebusaway.gtfs.model.Agency source) {
         return new Agency(source.getId(),
                 source.getName(),
-                source.getUrl(),
-                TimeZone.getTimeZone(source.getTimezone()));
+                source.getUrl(), TimeZone.getTimeZone(source.getTimezone()));
     }
 
     private Stop convertStop(org.onebusaway.gtfs.model.Stop source) {
@@ -140,8 +140,8 @@ public class DataPackage implements Serializable {
                 LocationType.valueOf(source.getLocationType()));  // fill this later
     }
 
-    private MetaRoute convertRoute(org.onebusaway.gtfs.model.Route source) {
-        return new MetaRoute(source.getId().getId(),
+    private Route convertRoute(org.onebusaway.gtfs.model.Route source) {
+        return new Route(source.getId().getId(),
                 agencyMap.get(source.getId().getAgencyId()),
                 RouteType.valueOf(source.getType()));
     }
@@ -193,7 +193,7 @@ public class DataPackage implements Serializable {
         b.transfers.add(transfer);
     }
 
-    public Map<Object, String> checkEmptyRoutes(Map<String, MetaRoute> routeMap) {
+    public Map<Object, String> checkEmptyRoutes(Map<String, Route> routeMap) {
         Map<Object, String> errors = new HashMap<>();
         var emptyRoutes = routeMap.values()
                 .parallelStream()
@@ -212,7 +212,7 @@ public class DataPackage implements Serializable {
                 .collect(Collectors.toList());
         emptyTrips.forEach(route -> errors.put(route, "Trip without any stopTimes! Removed."));
         emptyTrips.parallelStream().forEach(trip -> {
-            trip.metaRoute.trips.remove(trip);
+            trip.route.trips.remove(trip);
             tripMap.remove(trip.id);
         });
         return errors;
