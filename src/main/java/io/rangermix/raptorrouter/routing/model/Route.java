@@ -1,6 +1,6 @@
 package io.rangermix.raptorrouter.routing.model;
 
-import io.rangermix.raptorrouter.routing.enums.RouteType;
+import io.rangermix.raptorrouter.data.model.enums.RouteType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

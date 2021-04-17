@@ -17,7 +17,7 @@ public class DataSerializerTest {
 
     @Test
     void testGTFSRouteAndTrips() throws IOException {
-        var dao = DataManager.getSydneyGtfsDao(DataManager.getInmemoryStore());
+        var dao = DataManager.getSydneyGtfsDao(DataManager.createInmemoryStore());
         var dataPackage = new DataPackage(dao);
         var routesWithTripsWithDifferentStops = dataPackage.getMetaRouteMap()
                 .values()

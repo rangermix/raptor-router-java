@@ -18,7 +18,7 @@ class RaptorRouterTest {
 
     @BeforeEach
     void setUp() {
-        dataPackage = DataManager.getDataPackage(DataManager.getSydneyGtfsDao(DataManager.getInmemoryStore()));
+        dataPackage = DataManager.getDataPackage(DataManager.getSydneyGtfsDao(DataManager.createInmemoryStore()));
     }
 
     @Test

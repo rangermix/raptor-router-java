@@ -1,4 +1,4 @@
-package io.rangermix.raptorrouter.routing.enums;
+package io.rangermix.raptorrouter.data.model.enums;
 
 public enum LocationType {
     STOP, STATION, ENTRANCE_EXIT, GENERIC_NODE, BOARDING_AREA;

@@ -11,7 +11,7 @@ public class StopWatch {
     private final Logger log;
     private Instant startTime;
     private Instant lastLap;
-    private List<Instant> lapHistory;
+    public List<Instant> lapHistory;
 
     public StopWatch(Logger log) {
         this.log = log;
@@ -37,7 +37,13 @@ public class StopWatch {
         writeLog(string, lapTime, objects);
     }
 
-    private void writeLog(String string, Duration lapTime, Object[] objects) {
+    public void stop(String string, Object... objects) {
+        lap(string, objects);
+        var totalTime = Duration.between(lastLap, startTime);
+        writeLog("Total time", totalTime);
+    }
+
+    private void writeLog(String string, Duration lapTime, Object... objects) {
         log.info("{} - " + string, lapTime, objects);
     }
 }

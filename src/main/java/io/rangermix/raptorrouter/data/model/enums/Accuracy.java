@@ -1,4 +1,4 @@
-package io.rangermix.raptorrouter.routing.enums;
+package io.rangermix.raptorrouter.data.model.enums;
 
 public enum Accuracy {
     APPROXIMATE, EXACT;

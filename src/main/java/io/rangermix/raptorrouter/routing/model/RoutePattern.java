@@ -1,5 +1,9 @@
 package io.rangermix.raptorrouter.routing.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
@@ -7,9 +11,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+@AllArgsConstructor
 public class RoutePattern implements Serializable {
     @Serial
     private static final long serialVersionUID = 6874317310518777358L;
+    @Getter
+    public final String id;
     public final Route route;
     public final List<Stop> stops;
     public final List<Trip> trips;
@@ -21,6 +28,7 @@ public class RoutePattern implements Serializable {
         this.trips = trips;
         trips.sort(Trip.TIME_COMPARATOR);
         sampleTrip = trips.get(0);
+        id = route.id + sampleTrip.id;
     }
 
     public Iterator<StopTime> stopTimeIterator(Stop stop, long arriveTime) {

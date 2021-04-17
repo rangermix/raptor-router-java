@@ -1,11 +1,11 @@
 package io.rangermix.raptorrouter.routing.model;
 
-import io.rangermix.raptorrouter.data.model.Coordinate;
-import io.rangermix.raptorrouter.routing.enums.LocationType;
-import io.rangermix.raptorrouter.routing.enums.RouteType;
+import io.rangermix.raptorrouter.data.model.enums.LocationType;
+import io.rangermix.raptorrouter.data.model.enums.RouteType;
 import io.rangermix.raptorrouter.util.StopWatch;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
 import org.onebusaway.gtfs.model.AgencyAndId;
 import org.onebusaway.gtfs.services.GtfsMutableDao;
@@ -23,6 +23,7 @@ public class DataPackage implements Serializable {
     private static final long serialVersionUID = 1354778733203723197L;
     @Getter
     private transient final GtfsMutableDao staticGTFSSource;
+    public Object source;
     @Getter
     private final Map<String, Agency> agencyMap;
     @Getter
@@ -35,6 +36,16 @@ public class DataPackage implements Serializable {
     private final Map<String, Trip> tripMap;
 
     private final Map<Object, String> errors = new HashMap<>();
+
+    public DataPackage(Object source, Map<String, Agency> agencyMap, Map<String, Stop> stopMap, Map<String, Route> metaRouteMap, Map<String, Service> serviceMap, Map<String, Trip> tripMap) {
+        this.staticGTFSSource = null;
+        this.source = source;
+        this.agencyMap = agencyMap;
+        this.stopMap = stopMap;
+        this.metaRouteMap = metaRouteMap;
+        this.serviceMap = serviceMap;
+        this.tripMap = tripMap;
+    }
 
     public DataPackage(GtfsMutableDao staticGTFSSource) {
         this.staticGTFSSource = staticGTFSSource;
@@ -71,7 +82,8 @@ public class DataPackage implements Serializable {
                 stop.id)).getParentStation()));
         StopWatch stopWatch = new StopWatch(log);
         stopWatch.start("start creating transfers");
-        stopMap.values().parallelStream()
+        stopMap.values()
+                .parallelStream()
                 .forEach(a -> stopMap.values().parallelStream().forEach(b -> createTransfer(a, b)));
         stopWatch.lap("finished creating transfers");
 
@@ -107,7 +119,6 @@ public class DataPackage implements Serializable {
                             .collect(Collectors.toList())))
                     .forEach((stops, trips) -> route.routePatterns.add(new RoutePattern(route, stops, trips)));
             route.routePatterns.forEach(stopPattern -> stopPattern.stops.forEach(stop -> {
-                stop.routes.add(route);
                 stop.routePatterns.add(stopPattern);
             }));
         });
@@ -130,7 +141,8 @@ public class DataPackage implements Serializable {
     private Agency convertAgency(org.onebusaway.gtfs.model.Agency source) {
         return new Agency(source.getId(),
                 source.getName(),
-                source.getUrl(), TimeZone.getTimeZone(source.getTimezone()));
+                source.getUrl(),
+                TimeZone.getTimeZone(source.getTimezone()));
     }
 
     private Stop convertStop(org.onebusaway.gtfs.model.Stop source) {
@@ -188,7 +200,7 @@ public class DataPackage implements Serializable {
         if (distance > 1000)
             return;
 
-        Transfer transfer = new Transfer(a, b, distance);
+        Transfer transfer = new Transfer(ObjectId.get().toHexString(), a, b, distance);
         a.transfers.add(transfer);
         b.transfers.add(transfer);
     }

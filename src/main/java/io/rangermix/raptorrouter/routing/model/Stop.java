@@ -1,7 +1,6 @@
 package io.rangermix.raptorrouter.routing.model;
 
-import io.rangermix.raptorrouter.data.model.Coordinate;
-import io.rangermix.raptorrouter.routing.enums.LocationType;
+import io.rangermix.raptorrouter.data.model.enums.LocationType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +20,6 @@ public class Stop implements Serializable {
     public final LocationType locationType;
     public Stop parentStation;
     public final List<Transfer> transfers = Collections.synchronizedList(new ArrayList<>());
-    public final Set<Route> routes = ConcurrentHashMap.newKeySet();
     public final Set<RoutePattern> routePatterns = ConcurrentHashMap.newKeySet();
 
     public boolean behindStopInRoute(Stop other, RoutePattern routePattern) {

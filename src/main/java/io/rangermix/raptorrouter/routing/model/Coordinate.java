@@ -1,4 +1,4 @@
-package io.rangermix.raptorrouter.data.model;
+package io.rangermix.raptorrouter.routing.model;
 
 import lombok.Data;
 

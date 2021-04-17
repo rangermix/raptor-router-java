@@ -1,4 +1,4 @@
-package io.rangermix.raptorrouter.routing.enums;
+package io.rangermix.raptorrouter.data.model.enums;
 
 public enum BoardingInstruction {
     AVAILABLE, NOT_AVAILABLE, PHONE_AGENCY, COORDINATE_WITH_DRIVER;

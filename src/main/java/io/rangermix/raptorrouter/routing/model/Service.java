@@ -1,5 +1,6 @@
 package io.rangermix.raptorrouter.routing.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,6 +12,7 @@ import java.time.ZonedDateTime;
 import java.util.BitSet;
 
 @Data
+@AllArgsConstructor
 public class Service implements Serializable {
     @Serial
     private static final long serialVersionUID = -5149514752533129109L;

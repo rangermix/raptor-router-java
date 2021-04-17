@@ -16,23 +16,21 @@ import org.onebusaway.gtfs.services.HibernateGtfsFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Function;
 
 @Slf4j
 public class DataManager {
 
     @NotNull
-    public static DataPackage getDataPackage(GtfsMutableDao gtfsDao) {
-        StopWatch stopWatch = new StopWatch(log);
-        stopWatch.start("loading GTFS data into data package...");
-        DataPackage dataPackage = new DataPackage(gtfsDao);
-        stopWatch.lap("finished loading");
-        return dataPackage;
+    public static GtfsDaoImpl createInmemoryStore() {
+        return new GtfsDaoImpl();
     }
 
-    @NotNull
-    public static GtfsMutableDao getSydneyGtfsDao(@NotNull GtfsDaoImpl store) {
-        var pathname = "full_greater_sydney_gtfs_static.zip";
-        return readGtfsDataFromFile(pathname, store);
+    public static GtfsMutableRelationalDao getDatabaseStore() {
+        StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure().build();
+        SessionFactory sessionFactory = new MetadataSources(ssr).buildMetadata().buildSessionFactory();
+        HibernateGtfsFactory hibernateGtfsFactory = new HibernateGtfsFactory(sessionFactory);
+        return hibernateGtfsFactory.getDao();
     }
 
     @NotNull
@@ -53,15 +51,23 @@ public class DataManager {
     }
 
     @NotNull
-    public static GtfsDaoImpl getInmemoryStore() {
-        return new GtfsDaoImpl();
+    public static GtfsMutableDao getSydneyGtfsDao(@NotNull GtfsMutableDao store) {
+        var pathname = "full_greater_sydney_gtfs_static.zip";
+        return readGtfsDataFromFile(pathname, store);
     }
 
-    public static GtfsMutableRelationalDao getDatabaseStore() {
-        StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure().build();
-        SessionFactory sessionFactory = new MetadataSources(ssr).buildMetadata().buildSessionFactory();
-        HibernateGtfsFactory hibernateGtfsFactory = new HibernateGtfsFactory(sessionFactory);
-        return hibernateGtfsFactory.getDao();
+    @NotNull
+    public static DataPackage getDataPackage(@NotNull GtfsMutableDao gtfsDao) {
+        assert !gtfsDao.getAllAgencies().isEmpty();
+        StopWatch stopWatch = new StopWatch(log);
+        stopWatch.start("loading GTFS data into data package...");
+        DataPackage dataPackage = new DataPackage(gtfsDao);
+        stopWatch.lap("finished loading");
+        return dataPackage;
+    }
+
+    public static void storeToMongoDb() {
+
     }
 
 

@@ -15,7 +15,7 @@ public class DataSerializer {
 
     public static void buildSydney() throws IOException {
         StopWatch stopWatch = new StopWatch(log);
-        DataPackage dataPackage = DataManager.getDataPackage(DataManager.getSydneyGtfsDao(DataManager.getInmemoryStore()));
+        DataPackage dataPackage = DataManager.getDataPackage(DataManager.getSydneyGtfsDao(DataManager.createInmemoryStore()));
         try (FSTObjectOutput out = new FSTObjectOutput(new FileOutputStream("sydneyGTFS.dataPack"))) {
             out.getConf().setShareReferences(true);
             out.writeObject(dataPackage);

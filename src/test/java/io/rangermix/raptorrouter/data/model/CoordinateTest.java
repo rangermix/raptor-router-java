@@ -1,5 +1,6 @@
 package io.rangermix.raptorrouter.data.model;
 
+import io.rangermix.raptorrouter.routing.model.Coordinate;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

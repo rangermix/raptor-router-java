@@ -11,10 +11,10 @@ import java.util.*;
 public class Trip implements Serializable {
     @Serial
     private static final long serialVersionUID = -860604145187379705L;
-    final Route route;
-    final Service service;
+    public final Route route;
+    public final Service service;
     @Getter
-    final String id;
+    public final String id;
     public final List<StopTime> stopTimes = Collections.synchronizedList(new ArrayList<>());
 
     public static final Comparator<Trip> TIME_COMPARATOR = (a, b) -> {

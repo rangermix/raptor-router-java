@@ -13,12 +13,23 @@ import java.util.StringJoiner;
 public class StopTime implements Serializable {
     @Serial
     private static final long serialVersionUID = 6922301736941245674L;
+    @Getter
+    public final String id;
     public final Trip trip;
     public final long arrivalTime;
     public final long departureTime;
     @Getter
     public final Stop stop;
     public final int stopSequence;
+
+    public StopTime(Trip trip, long arrivalTime, long departureTime, Stop stop, int stopSequence) {
+        this.trip = trip;
+        this.arrivalTime = arrivalTime;
+        this.departureTime = departureTime;
+        this.stop = stop;
+        this.stopSequence = stopSequence;
+        id = trip.id + "-" + stopSequence;
+    }
 
     public long nextArrivalTimeFromDate(LocalDate tripStartDate) {
         var date = trip.service.nextEnabledDate(tripStartDate);
